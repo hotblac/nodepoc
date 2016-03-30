@@ -11,13 +11,30 @@ var server = app.listen(8081, function () {
 });
 
 
-app.get('/events', function (req, res) {
-   console.log('Event');
+app.get('/notify/spanner/:spanner_id/update', function (req, res) {
+   var spanner_id = req.params.spanner_id;
+   console.log('Event: spanner %s updated', spanner_id);
    wss.clients.forEach(function each(client) {
-      client.send("broadcast:" + "TODO");
+      client.send("broadcast: spanner " + spanner_id + " updated");
     });
    res.sendStatus(200);
 });
 
+app.get('/notify/spanner/:spanner_id/delete', function (req, res) {
+   var spanner_id = req.params.spanner_id;
+   console.log('Event: spanner %s deleted', spanner_id);
+   wss.clients.forEach(function each(client) {
+      client.send("broadcast: spanner " + spanner_id + " deleted");
+    });
+   res.sendStatus(200);
+});
 
+app.get('/notify/spanner/:spanner_id/add', function (req, res) {
+   var spanner_id = req.params.spanner_id;
+   console.log('Event: spanner %s added', spanner_id);
+   wss.clients.forEach(function each(client) {
+      client.send("broadcast: spanner " + spanner_id + " added");
+    });
+   res.sendStatus(200);
+});
 
